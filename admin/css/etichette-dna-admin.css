@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Stili personalizzati aggiuntivi qui sotto
+ */
+
+.etichette-dna-admin-container {
+  max-width: 100rem;
+}
+
+#cancel-form {
+    background-color: rgb(229, 231, 235);
+}
+
+.titolo-etichetta {
+    font-family: 'Cormorant-Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.gap-8 {
+    gap: 4rem;
+}
+
+.card-titolo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

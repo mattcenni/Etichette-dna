@@ -1,0 +1,11 @@
+{
+  "name": "etichette-dna",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tailwindcss -i ./admin/css/etichette-dna-admin.css -o ./admin/css/etichette-dna-admin.min.css",
+    "watch": "tailwindcss -i ./admin/css/etichette-dna-admin.css -o ./admin/css/etichette-dna-admin.min.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+} 
