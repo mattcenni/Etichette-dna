@@ -83,7 +83,7 @@ class Etichette_Dna_Ajax {
         $table_etichette = $wpdb->prefix . 'dna_etichette';
         
         $etichette = $wpdb->get_results("
-            SELECT id, nome_prodotto, anno, lotto, data_creazione, etichetta, qr_code 
+            SELECT id, nome_prodotto, descrizione_prodotto, anno, lotto, data_creazione, etichetta, qr_code 
             FROM $table_etichette 
             ORDER BY data_creazione DESC
         ");
@@ -98,7 +98,7 @@ class Etichette_Dna_Ajax {
         $table_etichette = $wpdb->prefix . 'dna_etichette';
         
         $etichette = $wpdb->get_results("
-            SELECT id, nome_prodotto, anno, lotto, data_creazione, etichetta, qr_code 
+            SELECT id, nome_prodotto, descrizione_prodotto, anno, lotto, data_creazione, etichetta, qr_code 
             FROM $table_etichette 
             WHERE etichetta IS NOT NULL 
             ORDER BY data_creazione DESC
@@ -289,10 +289,10 @@ class Etichette_Dna_Ajax {
         $etichetta_id = isset($_POST['etichetta_id']) ? intval($_POST['etichetta_id']) : 0;
         $nome_prodotto = sanitize_text_field($_POST['nome_prodotto']);
         $anno = sanitize_text_field($_POST['anno']);
-        $lotto = $_POST['lotto'];
+        $descrizione_prodotto = sanitize_text_field($_POST['descrizione_prodotto']);
 
         // Crea lo slug del file mantenendo le maiuscole nel lotto
-        $filename = str_replace(' ', '', $nome_prodotto) . str_replace(' ', '', $anno) . '.html';
+        $filename = str_replace(' ', '', $nome_prodotto) . str_replace(' ', '', $descrizione_prodotto) . str_replace(' ', '', $anno) . '.html';
         
         // Crea la cartella etichette nella root del sito
         $etichette_dir = ABSPATH . 'etichette';
@@ -762,7 +762,8 @@ class Etichette_Dna_Ajax {
                     'proteine' => null,
                     'sale' => null,
                     'etichetta' => null,
-                    'qr_code' => null
+                    'qr_code' => null,
+                    'data_creazione' => null
                 ),
                 array('id' => $etichetta_id),
                 array(
@@ -772,7 +773,7 @@ class Etichette_Dna_Ajax {
                     '%d', '%s', '%s', '%s',
                     '%d', '%s', '%s', '%s',
                     '%f', '%f', '%f', '%f', '%f', '%f', '%f', '%f',
-                    '%s', '%s'
+                    '%s', '%s', '%s'
                 ),
                 array('%d')
             );
