@@ -71,9 +71,10 @@ function setupFormEventListeners() {
                 console.log('Response:', response); // Debug
                 if (response.success) {
                     alert('Etichetta salvata con successo!');
-                    enableCard1();
-                    loadExistingEtichette();
-                    
+                    window.location.reload(true);
+                    /* Matteo enableCard1();
+                    loadExistingEtichette(); */
+                    console.log('Etichetta salvata con successo!');
                     if (formData.get('nome_prodotto') && formData.get('anno') && formData.get('lotto')) {
                         generateLabelBtn.disabled = false;
                     }
@@ -315,11 +316,12 @@ function showEtichettaForm(etichettaId) {
     
     function checkRequiredFields() {
         const nomeProdotto = form.querySelector('[name="nome_prodotto"]').value.trim();
+        const descrizioneProdotto = form.querySelector('[name="descrizione_prodotto"]').value.trim();
         const anno = form.querySelector('[name="anno"]').value.trim();
         
         console.log('Checking fields:', { nomeProdotto, anno }); // Debug
         
-        return nomeProdotto !== '' && anno !== '';
+        return nomeProdotto !== '' && descrizioneProdotto !== '' && anno !== '';
     }
 
     function updateGenerateButton() {
@@ -337,11 +339,11 @@ function showEtichettaForm(etichettaId) {
     const nomeProdottoInput = form.querySelector('[name="nome_prodotto"]');
     const annoInput = form.querySelector('[name="anno"]');
     const lottoInput = form.querySelector('[name="lotto"]');
-
+    const descrizioneProdottoInput = form.querySelector('[name="descrizione_prodotto"]');
     nomeProdottoInput?.addEventListener('input', updateGenerateButton);
     annoInput?.addEventListener('input', updateGenerateButton);
     lottoInput?.addEventListener('input', updateGenerateButton);
-
+    descrizioneProdottoInput?.addEventListener('input', updateGenerateButton);
     // Quando i dati vengono caricati nel form
     jQuery.ajax({
         url: ajaxurl,
@@ -359,7 +361,8 @@ function showEtichettaForm(etichettaId) {
                 if (nomeProdottoInput) nomeProdottoInput.value = data.nome_prodotto || '';
                 if (annoInput) annoInput.value = data.anno || '';
                 if (lottoInput) lottoInput.value = data.lotto || '';
-                
+                if (descrizioneProdottoInput) descrizioneProdottoInput.value = data.descrizione_prodotto || '';
+
                 // Verifica lo stato del pulsante dopo aver popolato i campi
                 updateGenerateButton();
                 
@@ -418,6 +421,7 @@ function showEtichettaForm(etichettaId) {
                 nonce: etichetteDnaParams.nonce,
                 etichetta_id: etichettaId,
                 nome_prodotto: nomeProdottoInput.value.trim(),
+                descrizione_prodotto: descrizioneProdottoInput.value.trim(),
                 anno: annoInput.value.trim()
             },
             success: function(response) {
@@ -434,6 +438,7 @@ function showEtichettaForm(etichettaId) {
                             etichetta_path: response.data.file_path
                         }
                     });
+                    window.location.reload(true);
                 } else {
                     alert('Errore durante la generazione dell\'etichetta: ' + response.data);
                 }
@@ -489,6 +494,7 @@ function showEtichettaForm(etichettaId) {
                     // Aggiorna lo stato del pulsante
                     generateQrBtn.disabled = true;
                     generateQrBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    window.location.reload(true);
                 } else {
                     alert('Errore durante la generazione del QR Code: ' + response.data);
                     generateQrBtn.disabled = false;
@@ -519,8 +525,9 @@ function createEtichettaBox(etichetta, index) {
     // Contenuto principale
     const contentDiv = document.createElement('div');
     contentDiv.innerHTML = `
-        <h3 class="font-medium text-gray-900 mb-1">${etichetta.nome_prodotto || 'Nuovo prodotto'}</h3>
-        <p class="text-sm font-bold text-gray-600 mb-1">Anno: ${etichetta.anno || 'N/D'}</p>
+        <p class="text-sm font-bold text-gray-600 mb-1"">${etichetta.nome_prodotto || 'Nuovo prodotto'}</p>
+        <p class="text-sm font-bold text-gray-600 mb-1">${etichetta.descrizione_prodotto || 'Descrizione: N/D'}</p>
+        <h3 class="font-medium text-gray-900 mb-1">Anno: ${etichetta.anno || 'N/D'}</h3>
         <p class="text-xs text-gray-500">${etichetta.data_creazione || 'Data non impostata'}</p>
     `;
 
@@ -615,7 +622,7 @@ function createEtichettaBox(etichetta, index) {
         downloadQrBtn.addEventListener('click', () => {
             const link = document.createElement('a');
             link.href = etichetta.qr_code;
-            link.download = `${(etichetta.nome_prodotto || 'prodotto').replace(/\s+/g, '')}${etichetta.anno || ''}.pdf`;
+            link.download = `${(etichetta.nome_prodotto || 'prodotto').replace(/\s+/g, '')}${(etichetta.descrizione_prodotto || 'descrizione').replace(/\s+/g, '')}${etichetta.anno || ''}.pdf`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -660,6 +667,7 @@ function createEtichettaBox(etichetta, index) {
                         alert('Errore durante l\'eliminazione dell\'etichetta: ' + error);
                     }
                 });
+                window.location.reload(true);
             }
         });
     }
@@ -832,17 +840,15 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Elementi trovati, aggiungo event listener'); // Verifica elementi trovati
 
     addSlotsButton.addEventListener('click', function() {
-        console.log('Click sul pulsante'); // Verifica click
+        console.log('1. Click sul pulsante Aggiungi slots');
         
         const numeroSlots = parseInt(slotsInput.value);
-        console.log('Numero slots:', numeroSlots); // Verifica valore input
+        console.log('2. Numero slots:', numeroSlots);
         
         if (isNaN(numeroSlots) || numeroSlots <= 0) {
             alert('Inserisci un numero valido di slots');
             return;
         }
-
-        console.log('Invio richiesta AJAX'); // Verifica prima di AJAX
 
         jQuery.ajax({
             url: ajaxurl,
@@ -853,28 +859,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 nonce: etichetteDnaParams.nonce
             },
             success: function(response) {
-                console.log('Risposta AJAX ricevuta:', response);
+                console.log('3. Risposta ricevuta:', response);
                 
                 if (response.success) {
-                    const stats = response.data.stats;
-                    console.log('Aggiorno statistiche:', stats);
-                    
-                    document.querySelector('.total-slots dd').textContent = stats.total_slots;
-                    document.querySelector('.used-slots dd').textContent = stats.used_slots;
-                    document.querySelector('.remaining-slots dd').textContent = stats.remaining_slots;
-                    
-                    slotsInput.value = '';
-                    console.log('Statistiche aggiornate');
+                    alert('Slots aggiunti con successo!');
+                    window.location.reload(true);
                 } else {
-                    console.error('Errore nella risposta:', response.data);
+                    alert('Errore durante l\'aggiunta degli slots: ' + response.data);
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Errore AJAX:', {
-                    status: status,
-                    error: error,
-                    response: xhr.responseText
-                });
+                console.error('Errore:', error);
+                alert('Errore durante l\'aggiunta degli slots');
             }
         });
     });
@@ -892,8 +888,9 @@ function createEtichettaBoxDashboard(etichetta, index) {
     // Contenuto principale
     const contentDiv = document.createElement('div');
     contentDiv.innerHTML = `
-        <h5 class="font-medium text-gray-900 mb-1">${etichetta.nome_prodotto || 'Prodotto'}</h5>
-        <p class="text-sm font-bold text-gray-600 mb-1">Anno: ${etichetta.anno || 'N/D'}</p>
+        <p class="text-sm font-bold text-gray-600 mb-1">${etichetta.nome_prodotto || 'Prodotto'}</p>
+        <p class="text-sm font-bold text-gray-600 mb-1">${etichetta.descrizione_prodotto || 'Descrizione: N/D'}</p>
+        <h5 class="font-medium text-gray-900 mb-1">Anno: ${etichetta.anno || 'N/D'}</h5>
         <p class="text-xs text-gray-500 mb-0">${etichetta.data_creazione || 'Data non impostata'}</p>
     `;
 
@@ -940,7 +937,7 @@ function createEtichettaBoxDashboard(etichetta, index) {
         downloadQrBtn.addEventListener('click', () => {
             const link = document.createElement('a');
             link.href = etichetta.qr_code;
-            link.download = `${(etichetta.nome_prodotto || 'prodotto').replace(/\s+/g, '')}${etichetta.anno || ''}.pdf`;
+            link.download = `${(etichetta.nome_prodotto || 'prodotto').replace(/\s+/g, '')}${(etichetta.descrizione_prodotto || 'descrizione').replace(/\s+/g, '')}${etichetta.anno || ''}.pdf`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
