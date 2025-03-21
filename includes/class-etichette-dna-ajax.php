@@ -3,7 +3,7 @@
 class Etichette_Dna_Ajax {
     
     private $materiali_raccolta = [
-        'Vetro trasparente - GL 70' => 'Raccolta vetro',
+        'Vetro incolore - GL 70' => 'Raccolta vetro',
         'Vetro verde - GL 71' => 'Raccolta vetro',
         'Vetro marrone - GL 72' => 'Raccolta vetro',
         'Alluminio - ALU 41' => 'Raccolta metalli',
@@ -19,12 +19,12 @@ class Etichette_Dna_Ajax {
     ];
 
     private $materiali_traduzioni = [
-        'Vetro trasparente - GL 70' => 'Clear glass - GL 70',
+        'Vetro incolore - GL 70' => 'Clear glass - GL 70',
         'Vetro verde - GL 71' => 'Green glass - GL 71',
         'Vetro marrone - GL 72' => 'Brown glass - GL 72',
         'Alluminio - ALU 41' => 'Aluminium - ALU 41',
-        'Polilaminato-Alluminio - C/ALU 90' => 'Paper and aluminium composite - C/ALU 90',
-        'Poliaccoppiato - C/PVC 90' => 'Paper and PVC composite - C/PVC 90',
+        'Polilaminato-Alluminio - C/ALU 90' => 'Aluminium composite - C/ALU 90',
+        'Poliaccoppiato - C/PVC 90' => 'PVC composite - C/PVC 90',
         'PET - PET 1' => 'PET (Polyethylene terephthalate) - PET 1',
         'Polietilene - PE-HD 2' => 'Polyethylene - PE-HD 2',
         'Polipropilene - PP 5' => 'Polypropylene - PP 5',
