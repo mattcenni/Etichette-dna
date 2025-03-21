@@ -98,7 +98,7 @@ function showEtichettaForm(etichettaId) {
             
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Nome prodotto</label>
+                    <label class="block text-lg font-medium text-gray-700">Nome prodotto</label>
                     <input type="text" name="nome_prodotto" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-fuchsia-500 focus:ring-fuchsia-500">
                 </div>
                 <div>
@@ -131,7 +131,7 @@ function showEtichettaForm(etichettaId) {
                         <button type="button" id="upload_image_button" class="rounded-md bg-fuchsia-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-fuchsia-500">
                             Seleziona immagine
                         </button>
-                        <div id="image-preview" class="ml-4 h-16 w-16 hidden">
+                        <div id="image-preview" class="ml-4 h-16 w-16 hidden" style="margin-left: 2em; width: 8rem; height: auto!important;">
                             <img src="" alt="Preview" class="h-full w-full object-cover rounded-md">
                         </div>
                     </div>
